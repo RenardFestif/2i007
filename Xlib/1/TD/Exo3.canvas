@@ -1,0 +1,111 @@
+/*
+  Exo3.c
+  A compiler avec	gcc -o Exo3 Exo3.c -lX11
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <X11/Xlib.h>   
+#include <unistd.h>
+
+
+Display              *dpy;
+Window                racine, principale;
+int                   ecran;
+GC                    ctx;
+XEvent                evmt;
+XSetWindowAttributes  attr;
+int                   compteur = 0;
+
+
+void PourExpose (XExposeEvent *evmt) {
+}
+
+
+void PourButtonPress (XButtonPressedEvent *evmt) {
+
+  /* ?????????? */
+
+}
+
+
+void PourButtonRelease (XButtonReleasedEvent *evmt) {
+
+  /* ?????????? */
+
+}
+
+
+void PourButtonRelease4 (XButtonReleasedEvent *evmt) {
+  int intensite;
+
+  /* ?????????? */
+
+}
+
+
+void PourButtonRelease5 (XButtonReleasedEvent *evmt) {
+  int intensite;
+
+  /* ?????????? */
+
+}
+
+
+void Installer (char *serveur) {
+  dpy = XOpenDisplay(serveur);          /* demande une connexion au serveur  */
+  if (dpy == NULL) {
+     printf("Connection impossoble avec le serveur %s.\n", serveur);
+     exit(0);
+  }
+
+  racine     = DefaultRootWindow(dpy);  /* on recupere la racine             */
+  ecran      = DefaultScreen(dpy);      /* ecran par defaut qui doit etre 0  */
+  ctx        = XCreateGC(dpy, racine, 0, NULL);
+
+  principale = XCreateSimpleWindow(dpy, /* demande de creation d'une fenetre */
+		 racine,                 /*   comme mere racine              */
+		 0, 0, 200, 200,         /* la geometrie                     */
+		 0,                      /* epaisseur pour la bordure        */
+		 BlackPixel(dpy, ecran), /* pixel (couleur pour la bordure)  */
+		 BlackPixel(dpy, ecran));/* pixel (pour le fond)             */
+
+  /* ?????????? */
+
+  XStoreName(dpy, principale, "Exemple 1");
+  XMapWindow(dpy, principale);
+}
+
+int main (int argc, char *argv[]) {	/* la procedue main()                */
+  Installer(NULL);
+  for (;;) {				/* la boucle d'evenements            */
+    if (!XCheckWindowEvent(dpy, principale, ButtonPressMask, (XEvent *)&evmt)) {
+      compteur = 0;
+      usleep(100000);
+      XClearWindow(dpy, principale);
+    }
+    XNextEvent(dpy, &evmt);
+    switch (evmt.type) {
+    case Expose :
+      PourExpose((XExposeEvent *)&evmt);
+      break;
+    case ButtonPress :
+      PourButtonPress((XButtonPressedEvent *)&evmt);
+      break;
+    case ButtonRelease :
+      switch (evmt.xbutton.button) {
+      case 4 :
+	PourButtonRelease4((XButtonReleasedEvent *)&evmt);
+	break;
+      case 5 :
+	PourButtonRelease5((XButtonReleasedEvent *)&evmt);
+	break;
+      default :
+	PourButtonRelease((XButtonReleasedEvent *)&evmt);
+	break;
+      }
+      break;
+    default :;
+    }
+  }
+}

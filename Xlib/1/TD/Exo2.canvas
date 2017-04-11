@@ -1,0 +1,109 @@
+/* Exo2.canvas */
+
+#include <X11/Xlib.h>
+#include <stdlib.h>
+#include <stdio.h>
+
+#define min(x, y)	((x) < (y) ? (x) : (y))
+#define max(x, y)	((x) > (y) ? (x) : (y))
+#define abs(x)		((x) > 0 ? (x) : -(x))
+
+
+Display	      *dpy;
+int	       ecran;
+Window	       racine, principale, fille;
+XEvent	       evmt;
+unsigned long  noir, blanc;
+double         largeur_principale, hauteur_principale;
+double         x_fille, y_fille, largeur_fille,hauteur_fille;
+int	       bouton;
+
+int	       x, y;
+
+
+/* Les prototypes de fonctions */
+void Installer	         (void);
+void PourButtonPress     (XButtonEvent *evmt);
+void PourMotionNotify    (XPointerMovedEvent *evmt);
+void PourButtonRelease   (XButtonEvent *evmt);
+void PourConfigureNotify (XConfigureEvent *evmt);
+
+
+int main (int argc, char *argv[]) {	/* la procedue main()                */
+  Installer();
+  for (;;) {				/* la boucle d'evenements            */
+
+    /********** ?????????? **********/
+
+  }
+}
+
+
+void Installer (void) {
+  dpy    = XOpenDisplay(NULL);
+  racine = DefaultRootWindow(dpy);
+  ecran  = DefaultScreen(dpy);
+  noir   = 0x0;
+  blanc  = 0xFFFFFF;
+
+  x = y = bouton = -1;
+
+  largeur_principale = hauteur_principale = 200;
+
+  largeur_fille = largeur_principale / 10;
+  hauteur_fille = hauteur_principale / 10;
+  x_fille       = (largeur_principale - largeur_fille) * 0.5;
+  y_fille       = (hauteur_principale - hauteur_fille) * 0.5;
+
+  principale = XCreateSimpleWindow(dpy,
+				   racine,
+				   0, 0,
+				   largeur_principale,
+				   hauteur_principale,
+				   0,
+				   noir, blanc);
+  fille      = XCreateSimpleWindow(dpy,
+				   principale,
+				   x_fille,
+				   y_fille,
+				   largeur_fille, hauteur_fille,
+				   1,
+				   noir, noir);
+
+  XStoreName(dpy, principale, "Exercice 3");
+
+  /********** ?????????? **********/
+
+  XMapSubwindows(dpy, principale);
+  XMapWindow(dpy, principale);
+}
+
+
+void PourButtonPress (XButtonEvent *evmt) {
+
+  /********** ?????????? **********/
+
+}
+
+
+void PourMotionNotify (XPointerMovedEvent *evmt) {
+  XWindowChanges attributes;
+
+  /********** ?????????? **********/
+
+}
+
+
+void PourButtonRelease (XButtonEvent *evmt) {
+
+  /********** ?????????? **********/
+
+}
+
+
+void PourConfigureNotify (XConfigureEvent *evmt) {
+  XWindowChanges attributes;
+
+  /********** ?????????? **********/
+
+}
